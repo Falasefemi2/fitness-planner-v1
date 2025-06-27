@@ -89,7 +89,6 @@ export default function PlannerPage() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      // Save fitness plan to DB
       const savePlanResponse = await fetch('/api/fitness-plans', {
         method: 'POST',
         headers: {
@@ -103,7 +102,6 @@ export default function PlannerPage() {
         return;
       }
 
-      // Generate exercise plan
       const generateExerciseResponse = await fetch('/api/generate-exercise', {
         method: 'POST',
         headers: {
@@ -119,7 +117,6 @@ export default function PlannerPage() {
         const data = await generateExerciseResponse.json();
         setWorkoutPlan(data.workoutPlan);
 
-        // Now, send the workoutPlan to the fitness-plans API to save it
         const finalSaveResponse = await fetch('/api/fitness-plans', {
           method: 'POST',
           headers: {
@@ -127,14 +124,13 @@ export default function PlannerPage() {
           },
           body: JSON.stringify({
             ...formData,
-            workoutPlan: data.workoutPlan, // Include the generated workout plan
+            workoutPlan: data.workoutPlan,
           }),
         });
 
         if (finalSaveResponse.ok) {
           setIsSubmitted(true);
-          // Redirect to a dashboard or plan viewing page
-          window.location.href = '/dashboard'; // Redirect to the new dashboard page
+          window.location.href = '/dashboard';
         } else {
           console.error('Failed to save generated workout plan to DB');
         }
@@ -246,22 +242,20 @@ export default function PlannerPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <Button
                     variant={formData.gender === "male" ? "default" : "outline"}
-                    className={`h-20 text-lg ${
-                      formData.gender === "male"
-                        ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
-                        : "hover:bg-gray-50"
-                    }`}
+                    className={`h-20 text-lg ${formData.gender === "male"
+                      ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
+                      : "hover:bg-gray-50"
+                      }`}
                     onClick={() => handleGenderSelect("male")}
                   >
                     Male
                   </Button>
                   <Button
                     variant={formData.gender === "female" ? "default" : "outline"}
-                    className={`h-20 text-lg ${
-                      formData.gender === "female"
-                        ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
-                        : "hover:bg-gray-50"
-                    }`}
+                    className={`h-20 text-lg ${formData.gender === "female"
+                      ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
+                      : "hover:bg-gray-50"
+                      }`}
                     onClick={() => handleGenderSelect("female")}
                   >
                     Female
@@ -286,11 +280,10 @@ export default function PlannerPage() {
                   <Button
                     key={goal.id}
                     variant={formData.goal === goal.id ? "default" : "outline"}
-                    className={`w-full h-auto p-4 justify-start ${
-                      formData.goal === goal.id
-                        ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
-                        : "hover:bg-gray-50"
-                    }`}
+                    className={`w-full h-auto p-4 justify-start ${formData.goal === goal.id
+                      ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
+                      : "hover:bg-gray-50"
+                      }`}
                     onClick={() => handleGoalSelect(goal.id)}
                   >
                     <div className="text-left">
@@ -319,11 +312,10 @@ export default function PlannerPage() {
                     <Button
                       key={area.id}
                       variant={formData.focusAreas.includes(area.id) ? "default" : "outline"}
-                      className={`h-auto p-4 ${
-                        formData.focusAreas.includes(area.id)
-                          ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
-                          : "hover:bg-gray-50"
-                      }`}
+                      className={`h-auto p-4 ${formData.focusAreas.includes(area.id)
+                        ? "bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700"
+                        : "hover:bg-gray-50"
+                        }`}
                       onClick={() => handleFocusAreaToggle(area.id)}
                     >
                       <div className="text-center">

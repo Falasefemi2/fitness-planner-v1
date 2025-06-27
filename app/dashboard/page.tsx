@@ -60,7 +60,7 @@ export default async function DashboardPage() {
     );
   }
 
-  const latestPlan = plans[plans.length - 1]; // Get the latest plan
+  const latestPlan = plans[plans.length - 1];
   const workoutPlan: WorkoutPlan | null = latestPlan.workoutPlan as WorkoutPlan;
 
   return (

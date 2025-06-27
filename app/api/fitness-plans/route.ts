@@ -17,34 +17,35 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // Find the user in our database
     const userResult = await db
       .select()
       .from(users)
       .where(eq(users.clerkId, clerkId));
 
     if (userResult.length === 0) {
-      console.error(`Fitness Plan API: User with Clerk ID ${clerkId} not found in database.`);
+      console.error(
+        `Fitness Plan API: User with Clerk ID ${clerkId} not found in database.`
+      );
       return new NextResponse("User not found in our database", {
         status: 404,
       });
     }
     const user = userResult[0];
 
-    console.log(`Fitness Plan API: User ${user.email} (ID: ${user.id}) found. Proceeding with plan insertion.`);
+    console.log(
+      `Fitness Plan API: User ${user.email} (ID: ${user.id}) found. Proceeding with plan insertion.`
+    );
 
-    // Insert the fitness plan and get the ID
     const [newPlan] = await db
       .insert(fitnessPlans)
       .values({
         userId: user.id,
         gender,
         goal,
-        workoutPlan: workoutPlan || null, // Save the generated workout plan
+        workoutPlan: workoutPlan ?? null,
       })
       .returning({ planId: fitnessPlans.id });
 
-    // Insert the focus areas
     if (areas && areas.length > 0) {
       const focusAreaValues = areas.map((area: string) => ({
         planId: newPlan.planId,
